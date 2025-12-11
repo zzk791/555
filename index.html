@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>点击图片跳转</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .image-container {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .clickable-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+        }
+        
+        /* 触摸设备优化 */
+        .clickable-image {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="denglu.jpg" alt="点击跳转" class="clickable-image" id="clickableImage">
+    </div>
+
+    <script>
+        // 设置跳转链接
+        const TARGET_URL = 'https://www.xiaohongshu.com/explore/67a854d9000000002901506a?xsec_token=ABK4cY4NihVHRvHQdJNpp7swkiG2Q-mC3keym0cdHMkyw=&xsec_source=pc_search&source=unknown';
+        
+        // 添加点击事件
+        document.getElementById('clickableImage').addEventListener('click', function() {
+            window.open(TARGET_URL, '_blank');
+        });
+        
+        // 移动端触摸事件优化
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        document.getElementById('clickableImage').addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+        
+        document.getElementById('clickableImage').addEventListener('touchend', function(e) {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            // 如果移动距离很小，视为点击
+            if (Math.abs(touchEndX - touchStartX) < 10 && Math.abs(touchEndY - touchStartY) < 10) {
+                window.open(TARGET_URL, '_blank');
+            }
+        });
+        
+        // 防止长按菜单
+        document.getElementById('clickableImage').addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
